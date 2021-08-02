@@ -28,7 +28,7 @@ public class Board {
     }
 
     public void showStartMessage() {
-        System.out.println("Let the game begin !\n");
+        System.out.print("\nLet the game begin !");
     }
 
     public void showEndMessage() {
@@ -36,7 +36,9 @@ public class Board {
     }
 
     public void showFrameHeader(int frameIndex) {
-        System.out.printf("\n\nFRAME %d: ", frameIndex);
+        System.out.printf("\n\n\n\nFRAME %d ", frameIndex);
+        System.out.print("\n-------------------------------------------------------------------------------------");
+        System.out.print("-------------------------------------------------------------------------------------");
     }
 
     public void showError(String message) {
@@ -45,6 +47,7 @@ public class Board {
 
     public void showRanking(Player[] players, Frames[] frames) {
         Ranking[] rankings = getRankings(players, frames);
+        System.out.println("------------------------------");
         for (int i = 0; i < rankings.length; i++) {
             System.out.printf("\n%d. %-10s : %3d pins", i + 1, rankings[i].getName(), rankings[i].getScore());
         }
@@ -62,7 +65,6 @@ public class Board {
 
     public void showPlayerHeader(Player player) {
         System.out.printf("\n\n%s", player.getName());
-
     }
 
     public void invitePlayer(int index) {
@@ -70,14 +72,25 @@ public class Board {
     }
 
     public void showInviteNumberOfPlayers() {
-        System.out.println("\nHow many players [2,3 or 4]? : ");
+        System.out.print("\nHow many players [2,3 or 4]? : ");
     }
 
     public void showInviteToRoll(int maxPins) {
         System.out.printf("\nMax to knock down: %d; press enter key to roll!...", maxPins);
     }
 
-    public void showNumberOfPinsKnockedDown(int pinsKnockedDown) {
+    public void showNumberOfPinsKnockedDown(int pinsKnockedDown, boolean  isHuman) {
+        if(!isHuman) {
+            System.out.println();
+        }
         System.out.printf("Pins knocked down: %d \n", pinsKnockedDown);
+    }
+
+    public void askPlayerType() {
+        System.out.print("Is auto player? [y/n] ");
+    }
+
+    public void askNewGame() {
+        System.out.print("\n\nNew game [y/n]: ");
     }
 }

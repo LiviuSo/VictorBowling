@@ -1,19 +1,13 @@
-import java.util.Scanner;
-
-public class Player {
+public abstract class Player {
 
     private String name;
-    private final RandomGenerator randomGenerator = new RandomGenerator();
+    protected final RandomGenerator randomGenerator = new RandomGenerator();
 
     public Player(String name) {
         this.name = name;
     }
 
-    public int roll(int maxPinsToKnockDown) {
-        Scanner scanner = new Scanner(System.in);
-        while (!scanner.hasNextLine()) ; // wait for enter
-        scanner.nextLine();
-        return randomGenerator.getRandomInt(maxPinsToKnockDown);
+    public Player() {
     }
 
     public String getName() {
@@ -24,4 +18,5 @@ public class Player {
         this.name = name;
     }
 
+    public abstract int roll(int maxPinsToKnockDown);
 }

@@ -10,7 +10,7 @@ public class Game {
     private ScoreCalculator scoreCalculator;
     private final Board board;
 
-    private Scanner reader = new Scanner(System.in);
+    private final Scanner reader = new Scanner(System.in);
 
 
     public Game(int noOfFrames, int noOfPins) {
@@ -26,14 +26,22 @@ public class Game {
     private void initPlayers() {
         players = new Player[noOfPlayers];
         for (int i = 0; i < noOfPlayers; i++) {
-            board.invitePlayer(i+1);
-            players[i] = new Player(reader.next());
+            board.askPlayerType();
+            while (!reader.hasNextLine()) ;
+            String type = reader.next();
+            if (type.equals("y")) {
+                players[i] = new AutoPlayer();
+            } else {
+                board.invitePlayer(i + 1);
+                String name = reader.next();
+                players[i] = new HumanPlayer(name);
+            }
         }
     }
 
     private void initFrames() {
         this.frames = new Frames[noOfPlayers];
-        for (int i = 0; i <noOfPlayers; i++) {
+        for (int i = 0; i < noOfPlayers; i++) {
             frames[i] = new Frames(noOfFrames, noOfPins);
         }
     }
@@ -70,7 +78,7 @@ public class Game {
     }
 
     private boolean askNewGame() {
-        System.out.println("\n\nNew game [y/n]: ");
+        board.askNewGame();
         String answer = reader.next();
         return answer.equals("y");
     }
@@ -105,13 +113,18 @@ public class Game {
     }
 
     private boolean roll(Player player, Frames frames, int frameIndex, Roll roll) {
-        int maxPins = frames.getFrameAt(frameIndex).getPinsLeftAfterFirstRoll();
-        if(roll == Roll.THIRD) {
-            maxPins = noOfPins; // for the third roll, we have the max number of pins
+        Frame frame = frames.getFrameAt(frameIndex);
+        int maxPins = frame.getPinsLeftAfterFirstRoll();
+        if (roll == Roll.THIRD || (roll == Roll.SECOND && frame.isLast())) {
+            maxPins = noOfPins; // for the third roll or the second  roll in the last frame after a strike,
+                                // we have the max number of pins
         }
-        board.showInviteToRoll(maxPins);
+        boolean isHuman = player.getClass() == HumanPlayer.class;
+        if (isHuman) {
+            board.showInviteToRoll(maxPins);
+        }
         int pinsKnockedDown = player.roll(maxPins);
-        board.showNumberOfPinsKnockedDown(pinsKnockedDown);
+        board.showNumberOfPinsKnockedDown(pinsKnockedDown, isHuman);
         return board.updateFrameGrid(frames, frameIndex, pinsKnockedDown, roll);
     }
 
