@@ -1,3 +1,5 @@
+package player;
+
 public class AutoPlayer extends Player {
 
     static int instanceCount = 0;
@@ -6,6 +8,10 @@ public class AutoPlayer extends Player {
         super();
         String name = "Player" + ++instanceCount;
         setName(name);
+    }
+
+    public static void resetInstanceCount() {
+        instanceCount = 0;
     }
 
     @Override

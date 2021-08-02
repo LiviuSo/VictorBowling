@@ -1,3 +1,5 @@
+package data;
+
 public class Frames {
 
     private final Frame[] frames;
@@ -16,7 +18,7 @@ public class Frames {
         return noOfFrames;
     }
 
-    Frame getFrameAt(int frameIndex) {
+    public Frame getFrameAt(int frameIndex) {
         return frames[frameIndex];
     }
 

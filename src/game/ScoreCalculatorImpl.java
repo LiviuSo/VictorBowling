@@ -1,9 +1,16 @@
+package game;
 
-public class ScoreCalculator {
+import data.Frame;
+import data.Frames;
+import data.Roll;
+import exception.ExceptionTool;
+import game.interf.ScoreCalculator;
+
+public class ScoreCalculatorImpl implements ScoreCalculator {
 
     protected int noOfPins;
 
-    public ScoreCalculator(int noOfPins) {
+    public ScoreCalculatorImpl(int noOfPins) {
         this.noOfPins = noOfPins;
     }
 
@@ -11,6 +18,7 @@ public class ScoreCalculator {
      * @param frames The array of all frames
      * @param index  The index of the current frame
      */
+    @Override
     public void updateTotals(Frames frames, int index) {
         ExceptionTool.checkIndex(index, frames.getNoOfFrames());
 
@@ -44,6 +52,7 @@ public class ScoreCalculator {
         }
     }
 
+    @Override
     public void updateScores(Frames frames, int index) {
         ExceptionTool.checkIndex(index, frames.getNoOfFrames());
 
@@ -69,6 +78,7 @@ public class ScoreCalculator {
         }
     }
 
+    @Override
     public boolean updateRolls(Frames frames, int frameIndex, int pinsKnockedDown, Roll roll) {
         ExceptionTool.checkIndex(frameIndex, frames.getNoOfFrames());
 

@@ -1,7 +1,9 @@
+package player;
+
 public abstract class Player {
 
     private String name;
-    protected final RandomGenerator randomGenerator = new RandomGenerator();
+    protected RandomGenerator randomGenerator = new RandomGenerator();
 
     public Player(String name) {
         this.name = name;

@@ -1,3 +1,5 @@
+package data;
+
 public class Ranking  {
     private String name;
     private int score;
@@ -6,7 +8,6 @@ public class Ranking  {
         this.name = name;
         this.score = score;
     }
-
 
     public String getName() {
         return name;

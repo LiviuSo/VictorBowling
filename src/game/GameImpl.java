@@ -1,39 +1,44 @@
-import java.util.InputMismatchException;
-import java.util.Scanner;
+package game;
 
-public class Game {
+import data.Frame;
+import data.Frames;
+import data.Roll;
+import game.interf.Game;
+import game.interf.ScoreCalculator;
+import player.AutoPlayer;
+import player.HumanPlayer;
+import player.Player;
+
+import java.util.InputMismatchException;
+
+public class GameImpl implements Game {
     private final int noOfFrames;
     private final int noOfPins;
     private int noOfPlayers;
     private Player[] players;
     private Frames[] frames;
-    private ScoreCalculator scoreCalculator;
-    private final Board board;
+    private final BoardImpl board;
 
-    private final Scanner reader = new Scanner(System.in);
-
-
-    public Game(int noOfFrames, int noOfPins) {
+    public GameImpl(int noOfFrames, int noOfPins) {
         this.noOfFrames = noOfFrames;
         this.noOfPins = noOfPins;
         this.noOfPlayers = 0;
         this.players = null;
         this.frames = null;
-        this.scoreCalculator = new ScoreCalculator(noOfPins);
-        this.board = new Board(scoreCalculator);
+        ScoreCalculator scoreCalculator = new ScoreCalculatorImpl(noOfPins);
+        this.board = new BoardImpl(scoreCalculator);
     }
 
     private void initPlayers() {
         players = new Player[noOfPlayers];
         for (int i = 0; i < noOfPlayers; i++) {
-            board.askPlayerType();
-            while (!reader.hasNextLine()) ;
-            String type = reader.next();
+            board.showInviteToEnterPlayerType();
+            String type = board.enterPlayerType();
             if (type.equals("y")) {
                 players[i] = new AutoPlayer();
             } else {
-                board.invitePlayer(i + 1);
-                String name = reader.next();
+                board.showInviteToEnterPlayerName(i + 1);
+                String name = board.enterPlayerName();
                 players[i] = new HumanPlayer(name);
             }
         }
@@ -46,12 +51,18 @@ public class Game {
         }
     }
 
+    @Override
     public void play() {
         do {
             setUpGame();
             playGame();
             showWinner();
+            endGame();
         } while (askNewGame());
+    }
+
+    private void endGame() {
+        AutoPlayer.resetInstanceCount();
     }
 
     private void showWinner() {
@@ -67,7 +78,7 @@ public class Game {
     private void askNumberOfPlayers() {
         do {
             board.showInviteNumberOfPlayers();
-            int noOfPlayers = reader.nextInt();
+            int noOfPlayers = board.enterNumberOfPlayers();
             if (noOfPlayers == 2 || noOfPlayers == 3 || noOfPlayers == 4) {
                 this.noOfPlayers = noOfPlayers;
                 break;
@@ -78,8 +89,8 @@ public class Game {
     }
 
     private boolean askNewGame() {
-        board.askNewGame();
-        String answer = reader.next();
+        board.showQuestionNewGame();
+        String answer = board.enterConfirmationNewGame();
         return answer.equals("y");
     }
 
@@ -115,7 +126,7 @@ public class Game {
     private boolean roll(Player player, Frames frames, int frameIndex, Roll roll) {
         Frame frame = frames.getFrameAt(frameIndex);
         int maxPins = frame.getPinsLeftAfterFirstRoll();
-        if (roll == Roll.THIRD || (roll == Roll.SECOND && frame.isLast())) {
+        if (roll == Roll.THIRD || (roll == Roll.SECOND && frame.isLast() && !frame.isStrike())) {
             maxPins = noOfPins; // for the third roll or the second  roll in the last frame after a strike,
                                 // we have the max number of pins
         }

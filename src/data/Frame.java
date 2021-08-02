@@ -1,3 +1,5 @@
+package data;
+
 public class Frame {
 
     private final int pins; // the number of pins
