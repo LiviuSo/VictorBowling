@@ -1,5 +1,3 @@
-import java.util.Comparator;
-
 public class Ranking  {
     private String name;
     private int score;

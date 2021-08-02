@@ -74,7 +74,10 @@ public class Board {
     }
 
     public void showInviteToRoll(int maxPins) {
-        System.out.printf("\n Max to knock down: %d; press a key to roll!... ", maxPins);
+        System.out.printf("\nMax to knock down: %d; press enter key to roll!...", maxPins);
     }
 
+    public void showNumberOfPinsKnockedDown(int pinsKnockedDown) {
+        System.out.printf("Pins knocked down: %d \n", pinsKnockedDown);
+    }
 }

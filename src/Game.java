@@ -106,8 +106,12 @@ public class Game {
 
     private boolean roll(Player player, Frames frames, int frameIndex, Roll roll) {
         int maxPins = frames.getFrameAt(frameIndex).getPinsLeftAfterFirstRoll();
+        if(roll == Roll.THIRD) {
+            maxPins = noOfPins; // for the third roll, we have the max number of pins
+        }
         board.showInviteToRoll(maxPins);
         int pinsKnockedDown = player.roll(maxPins);
+        board.showNumberOfPinsKnockedDown(pinsKnockedDown);
         return board.updateFrameGrid(frames, frameIndex, pinsKnockedDown, roll);
     }
 
