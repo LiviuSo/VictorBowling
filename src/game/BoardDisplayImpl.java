@@ -68,7 +68,7 @@ public class BoardDisplayImpl implements BoardDisplay {
 
     @Override
     public void showInviteToRoll(int maxPins) {
-        System.out.printf("\nMax to knock down: %d; press enter key to roll!...", maxPins);
+        System.out.printf("\nMax to knock down: %d; press <enter> to roll!...", maxPins);
     }
 
     @Override

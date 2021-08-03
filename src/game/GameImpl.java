@@ -29,6 +29,16 @@ public class GameImpl implements Game {
         this.board = new BoardImpl(scoreCalculator);
     }
 
+    @Override
+    public void play() {
+        do {
+            setUpGame();
+            playGame();
+            showWinner();
+            endGame();
+        } while (askNewGame());
+    }
+
     private void initPlayers() {
         players = new Player[noOfPlayers];
         for (int i = 0; i < noOfPlayers; i++) {
@@ -49,16 +59,6 @@ public class GameImpl implements Game {
         for (int i = 0; i < noOfPlayers; i++) {
             frames[i] = new Frames(noOfFrames, noOfPins);
         }
-    }
-
-    @Override
-    public void play() {
-        do {
-            setUpGame();
-            playGame();
-            showWinner();
-            endGame();
-        } while (askNewGame());
     }
 
     private void endGame() {
@@ -126,7 +126,7 @@ public class GameImpl implements Game {
     private boolean roll(Player player, Frames frames, int frameIndex, Roll roll) {
         Frame frame = frames.getFrameAt(frameIndex);
         int maxPins = frame.getPinsLeftAfterFirstRoll();
-        if (roll == Roll.THIRD || (roll == Roll.SECOND && frame.isLast() && !frame.isStrike())) {
+        if (roll == Roll.THIRD || (roll == Roll.SECOND && frame.isLast() && frame.isStrike())) {
             maxPins = noOfPins; // for the third roll or the second  roll in the last frame after a strike,
                                 // we have the max number of pins
         }

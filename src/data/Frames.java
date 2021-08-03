@@ -2,7 +2,7 @@ package data;
 
 public class Frames {
 
-    private final Frame[] frames;
+    private Frame[] frames;
     private final int noOfFrames;
 
     public Frames(int noOfFrames, int noOfPins) {
@@ -36,4 +36,13 @@ public class Frames {
     public Frame getLast() {
         return frames[noOfFrames-1];
     }
+
+    public void setFrames(Frame[] frames) {
+        this.frames = frames;
+    }
+
+    public Frame[] getFrames() {
+        return frames;
+    }
+
 }
