@@ -100,11 +100,39 @@ public class Frame {
     @Override
     public String toString() {
         StringBuilder sb =  new StringBuilder();
-        sb.append(pinsFirstRoll).append(' ').append(pinsSecondRoll);
-        if (hasThirdRoll) {
-            sb.append(' ').append(pinsThirdRoll);
+        if(pinsFirstRoll == -1) {
+            sb.append('_');
+        } else {
+            sb.append(pinsFirstRoll);
         }
-        sb.append(' ').append(total).append(' ').append(score);
+        sb.append(' ');
+        if(this.isStrike()) {
+            sb.append("X");
+        } else if(this.isSpare()) {
+            sb.append("/");
+        } else {
+            if(pinsSecondRoll == -1) {
+                sb.append('_');
+            } else {
+                sb.append(pinsSecondRoll);
+            }
+        }
+        sb.append(' ');
+        if (hasThirdRoll) {
+            sb.append(pinsThirdRoll);
+        }
+        sb.append(' ');
+        if(total == -1) {
+            sb.append('_');
+        } else {
+            sb.append(total);
+        }
+        sb.append(' ');
+        if(total == -1) {
+            sb.append('_');
+        } else {
+            sb.append(score);
+        }
         return sb.toString();
     }
 

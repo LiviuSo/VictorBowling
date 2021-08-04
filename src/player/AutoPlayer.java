@@ -16,6 +16,11 @@ public class AutoPlayer extends Player {
 
     @Override
     public int roll(int maxPinsToKnockDown) {
+        try {
+            Thread.sleep(20);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return randomGenerator.getRandomInt(maxPinsToKnockDown);
     }
 
