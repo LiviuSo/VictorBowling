@@ -1,12 +1,14 @@
 package test;
 
 import data.Frame;
+import data.FrameFactory;
 import data.Frames;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 public class FramesTests {
-    Frames frames =  new Frames(2, 10);
+    FrameFactory frameFactory = new FrameFactory();
+    Frames frames = frameFactory.getFrames(2, 10);
 
     @Test
     public void testGetFrameAt() {

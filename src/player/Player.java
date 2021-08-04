@@ -3,13 +3,15 @@ package player;
 public abstract class Player {
 
     private String name;
-    protected RandomGenerator randomGenerator = new RandomGenerator();
+    protected RandomGenerator randomGenerator;
 
-    public Player(String name) {
+    public Player(String name, RandomGenerator randomGenerator) {
         this.name = name;
+        this.randomGenerator = randomGenerator;
     }
 
-    public Player() {
+    public Player(RandomGenerator randomGenerator) {
+        this.randomGenerator = randomGenerator;
     }
 
     public String getName() {

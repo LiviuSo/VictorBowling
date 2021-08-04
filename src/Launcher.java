@@ -1,13 +1,12 @@
+import di.CompositionRootImpl;
 import game.interf.Game;
 import game.GameImpl;
 
 public class Launcher {
+    static int noOfFrames = 10;
+    static int noOfPins = 10;
 
     public static void main(String[] args) {
-
-        int noOfFrames = 10;
-        int noOfPins = 10;
-
         if(args.length  == 2) {
             noOfFrames =  Integer.parseInt(args[0]);
             noOfPins =  Integer.parseInt(args[1]);
@@ -15,7 +14,8 @@ public class Launcher {
             noOfFrames =  Integer.parseInt(args[0]);
         }
 
-        Game game = new GameImpl(noOfFrames, noOfPins);
+        CompositionRootImpl compositionRoot = new CompositionRootImpl(noOfFrames, noOfPins);
+        Game game = new GameImpl(compositionRoot);
         game.play();
     }
 }

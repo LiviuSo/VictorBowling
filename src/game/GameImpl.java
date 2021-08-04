@@ -1,13 +1,13 @@
 package game;
 
 import data.Frame;
+import data.FrameFactory;
 import data.Frames;
 import data.Roll;
+import di.CompositionRootImpl;
+import game.interf.Board;
 import game.interf.Game;
-import game.interf.ScoreCalculator;
-import player.AutoPlayer;
-import player.HumanPlayer;
-import player.Player;
+import player.*;
 
 import java.util.InputMismatchException;
 
@@ -17,26 +17,71 @@ public class GameImpl implements Game {
     private int noOfPlayers;
     private Player[] players;
     private Frames[] frames;
-    private final BoardImpl board;
+    private final Board board;
+    private final PlayerFactory playerFactory;
+    private final FrameFactory frameFactory;
 
-    public GameImpl(int noOfFrames, int noOfPins) {
-        this.noOfFrames = noOfFrames;
-        this.noOfPins = noOfPins;
+    public GameImpl(CompositionRootImpl compositionRoot) {
+        this.noOfFrames = compositionRoot.getNoOfFrame();
+        this.noOfPins = compositionRoot.getNoOfPins();
         this.noOfPlayers = 0;
         this.players = null;
         this.frames = null;
-        ScoreCalculator scoreCalculator = new ScoreCalculatorImpl(noOfPins);
-        this.board = new BoardImpl(scoreCalculator);
+        this.board = compositionRoot.getBoard();
+        this.playerFactory = compositionRoot.getPlayerFactory();
+        this.frameFactory = compositionRoot.getFrameFactory();
+    }
+
+    public void play() {
+        do {
+            try {
+                setUpGame();
+                playGame();
+                showWinner();
+            } catch (InputMismatchException e) {
+                board.showError("Invalid input.");
+            } finally {
+                endGame();
+            }
+        } while (askNewGame());
     }
 
     @Override
-    public void play() {
-        do {
-            setUpGame();
-            playGame();
-            showWinner();
-            endGame();
-        } while (askNewGame());
+    public void setUpGame() {
+        askNumberOfPlayers();
+        initPlayers();
+        initFrames();
+    }
+
+    @Override
+    public void playGame() {
+        try {
+            board.showStartMessage();
+            for (int frameIndex = 0; frameIndex < noOfFrames; ++frameIndex) {
+                playFrame(frameIndex);
+            }
+        } catch (ArrayIndexOutOfBoundsException | InputMismatchException e) {
+            board.showError(e.getMessage());
+        } finally {
+            board.showEndMessage();
+        }
+    }
+
+    @Override
+    public void endGame() {
+        AutoPlayer.resetInstanceCount();
+    }
+
+    @Override
+    public void showWinner() {
+        board.showRanking(players, frames);
+    }
+
+    @Override
+    public boolean askNewGame() {
+        board.showQuestionNewGame();
+        String answer = board.enterConfirmationNewGame();
+        return answer.equals("y");
     }
 
     private void initPlayers() {
@@ -45,11 +90,11 @@ public class GameImpl implements Game {
             board.showInviteToEnterPlayerType();
             String type = board.enterPlayerType();
             if (type.equals("y")) {
-                players[i] = new AutoPlayer();
+                players[i] = playerFactory.getAutoPlayer();
             } else {
                 board.showInviteToEnterPlayerName(i + 1);
                 String name = board.enterPlayerName();
-                players[i] = new HumanPlayer(name);
+                players[i] = playerFactory.getHumanPlayer(name);
             }
         }
     }
@@ -57,22 +102,8 @@ public class GameImpl implements Game {
     private void initFrames() {
         this.frames = new Frames[noOfPlayers];
         for (int i = 0; i < noOfPlayers; i++) {
-            frames[i] = new Frames(noOfFrames, noOfPins);
+            frames[i] = frameFactory.getFrames(noOfFrames, noOfPins);
         }
-    }
-
-    private void endGame() {
-        AutoPlayer.resetInstanceCount();
-    }
-
-    private void showWinner() {
-        board.showRanking(players, frames);
-    }
-
-    private void setUpGame() {
-        askNumberOfPlayers();
-        initPlayers();
-        initFrames();
     }
 
     private void askNumberOfPlayers() {
@@ -86,25 +117,6 @@ public class GameImpl implements Game {
                 board.showError("Invalid option.");
             }
         } while (true);
-    }
-
-    private boolean askNewGame() {
-        board.showQuestionNewGame();
-        String answer = board.enterConfirmationNewGame();
-        return answer.equals("y");
-    }
-
-    private void playGame() {
-        try {
-            board.showStartMessage();
-            for (int frameIndex = 0; frameIndex < noOfFrames; ++frameIndex) {
-                playFrame(frameIndex);
-            }
-        } catch (ArrayIndexOutOfBoundsException | InputMismatchException e) {
-            board.showError(e.getMessage());
-        } finally {
-            board.showEndMessage();
-        }
     }
 
     private void playFrame(int frameIndex) {

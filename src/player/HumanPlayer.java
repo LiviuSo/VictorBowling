@@ -6,8 +6,8 @@ public class HumanPlayer extends Player {
 
     static boolean _debug = false;
 
-    public HumanPlayer(String name) {
-        super(name);
+    public HumanPlayer(String name, RandomGenerator randomGenerator) {
+        super(name, randomGenerator);
     }
 
     public static void setDubug(boolean b) {

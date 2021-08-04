@@ -4,8 +4,8 @@ public class AutoPlayer extends Player {
 
     static int instanceCount = 0;
 
-    public AutoPlayer() {
-        super();
+    public AutoPlayer(RandomGenerator randomGenerator) {
+        super(randomGenerator);
         String name = "Player" + ++instanceCount;
         setName(name);
     }

@@ -5,13 +5,9 @@ public class Frames {
     private Frame[] frames;
     private final int noOfFrames;
 
-    public Frames(int noOfFrames, int noOfPins) {
+    public Frames(int noOfFrames, Frame[] frames) {
         this.noOfFrames = noOfFrames;
-        frames = new Frame[noOfFrames];
-        for (int i =  0;  i < noOfFrames;  i++) {
-            frames[i] = new Frame(noOfPins);
-        }
-        frames[noOfFrames-1].setIsLast(true);
+        this.frames = frames;
     }
 
     public int getNoOfFrames() {

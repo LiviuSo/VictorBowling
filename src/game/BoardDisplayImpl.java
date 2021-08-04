@@ -3,12 +3,19 @@ package game;
 import data.Frames;
 import data.Ranking;
 import data.RankingComparator;
+import data.RankingFactory;
 import game.interf.BoardDisplay;
 import player.Player;
 
 import java.util.Arrays;
 
 public class BoardDisplayImpl implements BoardDisplay {
+
+    private RankingFactory rankingFactory;
+
+    public BoardDisplayImpl(RankingFactory rankingFactory) {
+        this.rankingFactory = rankingFactory;
+    }
 
     @Override
     public void showFrames(Frames grid) {
@@ -50,7 +57,7 @@ public class BoardDisplayImpl implements BoardDisplay {
         int noOfPlayers = players.length;
         Ranking[] rankings = new Ranking[noOfPlayers];
         for (int i = 0; i < noOfPlayers; i++) {
-            rankings[i] = new Ranking(players[i].getName(), frames[i].getLast().getScore());
+            rankings[i] = rankingFactory.getRanking(players[i].getName(), frames[i].getLast().getScore());
         }
         Arrays.sort(rankings, new RankingComparator());
         return rankings;

@@ -14,10 +14,10 @@ public class BoardImpl implements Board {
     private final BoardConsole boardConsole;
     private final ScoreCalculator scoreCalculator;
 
-    public BoardImpl(ScoreCalculator scoreCalculator) {
-        this.scoreCalculator = scoreCalculator;
-        this.boardDisplay = new BoardDisplayImpl();
-        this.boardConsole = new BoardConsoleImpl();
+    public BoardImpl(ScoreCalculator scoreCalculator, BoardDisplay boardDisplay, BoardConsole boardConsole) {
+        this.scoreCalculator = scoreCalculator; // todo inject
+        this.boardDisplay = boardDisplay; // todo  inject
+        this.boardConsole = boardConsole; // todo inject
     }
 
     @Override

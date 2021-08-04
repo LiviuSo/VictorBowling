@@ -6,7 +6,11 @@ import java.util.Scanner;
 
 public class BoardConsoleImpl implements BoardConsole {
 
-    private final Scanner reader = new Scanner(System.in);
+    private final Scanner reader;
+
+    public BoardConsoleImpl(Scanner reader) {
+        this.reader = reader;
+    }
 
     @Override
     public String enterPlayerType() {
