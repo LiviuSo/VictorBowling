@@ -110,7 +110,7 @@ public class GameImpl implements Game {
         do {
             board.showInviteNumberOfPlayers();
             int noOfPlayers = board.enterNumberOfPlayers();
-            if (noOfPlayers == 2 || noOfPlayers == 3 || noOfPlayers == 4) {
+            if (noOfPlayers == 1 || noOfPlayers == 2 || noOfPlayers == 3 || noOfPlayers == 4) {
                 this.noOfPlayers = noOfPlayers;
                 break;
             } else {

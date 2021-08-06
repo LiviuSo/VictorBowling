@@ -70,7 +70,7 @@ public class BoardDisplayImpl implements BoardDisplay {
 
     @Override
     public void showInviteNumberOfPlayers() {
-        System.out.print("\nHow many players [2,3 or 4]? : ");
+        System.out.print("\nHow many players [1, 2,3 or 4]? : ");
     }
 
     @Override
